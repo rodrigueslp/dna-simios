@@ -1,184 +1,223 @@
 package com.meli.simios.business;
 
+import com.meli.simios.exception.DnaInvalidException;
+import com.meli.simios.util.FormatUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class SimianBusiness {
 
-    final int SEQUENCE_TO_SIMIAN = 4;
+    private final int SIMIAN_SEQUENCE = 4;
 
-    public Boolean isSimian(String[][] dna) {
+    private final Set ALLOWED_LETTERS = new HashSet<>(Arrays.asList("A", "G", "C", "T"));
 
-        return (getSimianDnaVertical(dna) + getSimianDnaHorizontal(dna) + getSimianDnaMainDiagonal(dna) + getSimianDnaSecondaryDiagonal(dna)) > 0;
+    @Autowired
+    private FormatUtil formatUtil;
+
+    public Boolean isSimian(String[] dna) throws DnaInvalidException {
+
+        if (dna == null || dna.length < 1) {
+            // TO DO THROW INVALIDARGUMENTEXCEPTION
+        }
+
+        String[][] formattedDna = formatUtil.formatToBidimensionalSimianDna(dna);
+
+        this.isDnaValid(formattedDna);
+
+        return (this.getVerticalSimianDna(formattedDna) + this.getSimianDnaHorizontal(formattedDna)
+                + this.getSimianDnaMainDiagonal(formattedDna) + this.getSimianDnaSecondaryDiagonal(formattedDna)) > 0;
+
 
     }
 
-    private int getSimianDnaVertical(String[][] dna) {
+    private int getVerticalSimianDna(String[][] dna) {
 
-        int contIguais = 1;
-        int contSimio = 0;
-        String ultimaLetra = "";
-        String atualLetra = "";
+        int countSequence = 1;
+        int countDnaSimio = 0;
+        String lastLetter = "";
+        String currentLetter;
 
         for (int i = 0; i < dna.length; i++) {
             for (int k = 0; k < dna[i].length; k++) {
                 if (k > 0) {
-                    atualLetra = dna[i][k];
-                    if (ultimaLetra.equals(atualLetra)) {
-                        contIguais++;
+                    currentLetter = dna[i][k];
+                    if (lastLetter.equals(currentLetter)) {
+                        countSequence++;
                     } else {
-                        contIguais = 1;
+                        countSequence = 1;
                     }
                 } else {
-                    atualLetra = dna[i][k];
+                    currentLetter = dna[i][k];
                 }
-                ultimaLetra = atualLetra;
-                if (contIguais == SEQUENCE_TO_SIMIAN) {
-                    contSimio++;
+                lastLetter = currentLetter;
+                if (countSequence == SIMIAN_SEQUENCE) {
+                    countDnaSimio++;
                 }
             }
-            contIguais = 1;
+            countSequence = 1;
         }
 
-        return contSimio;
+        return countDnaSimio;
 
     }
 
     private int getSimianDnaHorizontal(String[][] dna) {
 
-        int contIguais = 1;
-        int contSimio = 0;
-        String ultimaLetra = "";
-        String atualLetra = "";
+        int countSequence = 1;
+        int countDnaSimio = 0;
+        String lastLetter = "";
+        String currentLetter;
 
         for (int i = 0; i < dna.length; i++) {
             for (int k = 0; k < dna[i].length; k++) {
                 if (k > 0) {
-                    atualLetra = dna[k][i];
-                    if (ultimaLetra.equals(atualLetra)) {
-                        contIguais++;
+                    currentLetter = dna[k][i];
+                    if (lastLetter.equals(currentLetter)) {
+                        countSequence++;
                     } else {
-                        contIguais = 1;
+                        countSequence = 1;
                     }
                 } else {
-                    atualLetra = dna[k][i];
+                    currentLetter = dna[k][i];
                 }
-                ultimaLetra = atualLetra;
-                if (contIguais == SEQUENCE_TO_SIMIAN) {
-                    contSimio++;
+                lastLetter = currentLetter;
+                if (countSequence == SIMIAN_SEQUENCE) {
+                    countDnaSimio++;
                 }
             }
-            contIguais = 1;
+            countSequence = 1;
         }
 
-        return contSimio;
+        return countDnaSimio;
 
     }
 
     private int getSimianDnaMainDiagonal(String[][] dna) {
 
-        int contIguais = 1;
-        int contSimio = 0;
-        String ultimaLetra = "";
-        String atualLetra = "";
+        int countSequence = 1;
+        int countDnaSimio = 0;
+        String lastLetter = "";
+        String currentLetter;
 
         for (int i = 0; i < dna.length; ++i) {
 
             for (int j = 0; j < dna.length - i; ++j) {
-                atualLetra = dna[j][j+i];
-                if (ultimaLetra.equals(atualLetra)) {
-                    contIguais++;
+                currentLetter = dna[j][j+i];
+                if (lastLetter.equals(currentLetter)) {
+                    countSequence++;
                 }
 
-                if (contIguais == SEQUENCE_TO_SIMIAN) {
-                    contSimio++;
-                    contIguais = 1;
+                if (countSequence == SIMIAN_SEQUENCE) {
+                    countDnaSimio++;
+                    countSequence = 1;
                 }
-                ultimaLetra = atualLetra;
+                lastLetter = currentLetter;
             }
 
-            contIguais = 1;
+            countSequence = 1;
 
 
             if (i != 0) {
-                ultimaLetra = "";
-                atualLetra = "";
+
+                lastLetter = "";
 
                 for (int j = 0; j < dna.length - i; ++j) {
-                    atualLetra = dna[j+i][j];
-                    if (ultimaLetra.equals(atualLetra)) {
-                        contIguais++;
+                    currentLetter = dna[j+i][j];
+                    if (lastLetter.equals(currentLetter)) {
+                        countSequence++;
                     }
 
-                    if (contIguais == SEQUENCE_TO_SIMIAN) {
-                        contSimio++;
-                        contIguais = 1;
+                    if (countSequence == SIMIAN_SEQUENCE) {
+                        countDnaSimio++;
+                        countSequence = 1;
                     }
-                    ultimaLetra = atualLetra;
+                    lastLetter = currentLetter;
                 }
-                contIguais = 1;
+
+                countSequence = 1;
+
             }
+
         }
 
-        return contSimio;
+        return countDnaSimio;
 
     }
 
     private int getSimianDnaSecondaryDiagonal(String[][] dna) {
 
-        int contIguais = 1;
-        int contSimio = 0;
-        String ultimaLetra = "";
-        String atualLetra = "";
+        int countSequence = 1;
+        int countDnaSimio = 0;
+        String lastLetter = "";
+        String currentLetter = "";
 
         for (int c = 1; c <= dna.length; c++) {
             for (int i = 0; i < dna.length; i++) {
                 for (int k = 0; k < (dna.length); k++) {
                     if (i + k == (dna.length - c)) {
-                        atualLetra = dna[i][k];
+                        currentLetter = dna[i][k];
 
-                        if (ultimaLetra.equals(atualLetra)) {
-                            contIguais++;
+                        if (lastLetter.equals(currentLetter)) {
+                            countSequence++;
                         }
 
-                        if (contIguais == SEQUENCE_TO_SIMIAN) {
-                            contSimio++;
-                            contIguais = 1;
+                        if (countSequence == SIMIAN_SEQUENCE) {
+                            countDnaSimio++;
+                            countSequence = 1;
                         }
-                        ultimaLetra = atualLetra;
+                        lastLetter = currentLetter;
 
                     }
                 }
             }
 
-            contIguais = 1;
+            countSequence = 1;
 
             for (int i = 0; i < dna.length; i++) {
                 for (int k = 0; k < (dna.length); k++) {
                     if (i + k == (dna.length + (c-1))) {
 
-                        atualLetra = dna[i][k];
+                        currentLetter = dna[i][k];
 
-                        if (ultimaLetra.equals(atualLetra)) {
-                            contIguais++;
+                        if (lastLetter.equals(currentLetter)) {
+                            countSequence++;
                         }
 
-                        if (contIguais == SEQUENCE_TO_SIMIAN) {
-                            contSimio++;
-                            contIguais = 1;
+                        if (countSequence == SIMIAN_SEQUENCE) {
+                            countDnaSimio++;
+                            countSequence = 1;
                         }
-                        ultimaLetra = atualLetra;
+                        lastLetter = currentLetter;
 
                     }
                 }
             }
 
-            contIguais = 1;
+            countSequence = 1;
 
         }
 
-        return contSimio;
+        return countDnaSimio;
 
     }
+
+    private void isDnaValid(String[][] dna) throws DnaInvalidException {
+
+        for (int i=0; i < dna.length; i++) {
+            for (int k=0; k < dna.length; k++) {
+                if (!ALLOWED_LETTERS.contains(dna[i][k])) {
+                    throw new DnaInvalidException();
+                }
+            }
+        }
+
+    }
+
+
 
 }
