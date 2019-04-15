@@ -1,5 +1,6 @@
 package com.meli.simios.document;
 
+import com.meli.simios.enumerator.DnaTypeEnum;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,6 +12,8 @@ public class Dna {
     private ObjectId id;
 
     private String[][] dna;
+
+    private DnaTypeEnum dnaTypeEnum;
 
     public ObjectId getId() {
         return id;
@@ -26,5 +29,13 @@ public class Dna {
 
     public void setDna(String[][] dna) {
         this.dna = dna;
+    }
+
+    public DnaTypeEnum getDnaTypeEnum() {
+        return dnaTypeEnum;
+    }
+
+    public void setDnaTypeEnum(DnaTypeEnum dnaTypeEnum) {
+        this.dnaTypeEnum = dnaTypeEnum;
     }
 }

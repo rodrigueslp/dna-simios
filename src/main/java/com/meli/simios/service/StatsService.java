@@ -1,7 +1,7 @@
 package com.meli.simios.service;
 
-import com.meli.simios.DnaRepository;
-import com.meli.simios.util.MatrixSequenceUtil;
+import com.meli.simios.dto.StatsDto;
+import com.meli.simios.enumerator.DnaTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +9,27 @@ import org.springframework.stereotype.Service;
 public class StatsService {
 
     @Autowired
-    private DnaRepository dnaRepository;
+    private DnaService dnaService;
 
-    @Autowired
-    private MatrixSequenceUtil matrixSequenceUtil;
+    public StatsDto getStatsMutantAndHuman() {
+
+        int count_human_dna = dnaService.findAllByDnaTypeEnum(DnaTypeEnum.HUMAN).size();
+        int count_simian_dna = dnaService.findAllByDnaTypeEnum(DnaTypeEnum.MUTANT).size();
+
+        StatsDto statsDto = new StatsDto();
+        statsDto.setCount_human_dna(count_human_dna);
+        statsDto.setCount_mutant_dna(count_simian_dna);
+        if (statsDto.getCount_human_dna() > 0) {
+            float ratio = (float) statsDto.getCount_mutant_dna() / (float) statsDto.getCount_human_dna();
+            statsDto.setRatio(ratio);
+        } else {
+            statsDto.setRatio(statsDto.getCount_mutant_dna());
+        }
+
+        return statsDto;
+
+    }
+
+
 
 }

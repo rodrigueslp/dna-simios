@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -49,12 +51,16 @@ public class SimianServiceTest {
             fail("Test failed");
         } catch (DnaInvalidException e) {
             assertThat(e.getMessage(), is("Dna inválido."));
+        } catch (InterruptedException e) {
+            fail("Test failed");
+        } catch (ExecutionException e) {
+            fail("Test failed");
         }
 
     }
 
     @Test
-    public void isSimian_withMatrixWithSimianDna_mustReturnTrue() throws DnaInvalidException, InvalidArrayException {
+    public void isSimian_withMatrixWithSimianDna_mustReturnTrue() throws DnaInvalidException, InvalidArrayException, ExecutionException, InterruptedException {
 
         String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
         String[][] matrixWithSimianDna = this.getMatrixWithSimianDna();

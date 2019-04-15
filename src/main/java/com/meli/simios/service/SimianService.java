@@ -1,7 +1,6 @@
 package com.meli.simios.service;
 
-import com.meli.simios.document.Dna;
-import com.meli.simios.dto.StatsDto;
+import com.meli.simios.enumerator.DnaTypeEnum;
 import com.meli.simios.exception.DnaInvalidException;
 import com.meli.simios.exception.InvalidArrayException;
 import com.meli.simios.util.FormatUtil;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class SimianService {
@@ -34,7 +33,7 @@ public class SimianService {
     @Autowired
     private MatrixSequenceUtil matrixSequenceUtil;
 
-    public Boolean isSimian(String[] dna) throws DnaInvalidException, InvalidArrayException {
+    public Boolean isSimian(String[] dna) throws DnaInvalidException, InvalidArrayException, ExecutionException, InterruptedException {
 
         validUtil.validArray(dna);
 
@@ -42,37 +41,13 @@ public class SimianService {
 
         this.validSimianDna(formattedDna);
 
-        dnaService.saveIfUniqueDna(formattedDna);
+        Boolean isSimian = matrixSequenceUtil.getAllSequences(formattedDna, QT_MAX_SEQUENCE_SIMIAN) > 0;
 
-        return matrixSequenceUtil.getAllSequences(formattedDna, QT_MAX_SEQUENCE_SIMIAN) > 0;
+        DnaTypeEnum dnaTypeEnum = isSimian ? DnaTypeEnum.MUTANT : DnaTypeEnum.HUMAN;
 
-    }
+        dnaService.saveIfUniqueDna(formattedDna, dnaTypeEnum);
 
-    public StatsDto getStats() {
-
-        List<Dna> DNAs = dnaService.findAll();
-
-        int count_simian_dna = 0, count_human_dna = 0;
-
-        for (Dna dna : DNAs) {
-            int qt_sequences = matrixSequenceUtil.getAllSequences(dna.getDna(), QT_MAX_SEQUENCE_SIMIAN);
-            if (qt_sequences > 0) {
-                count_simian_dna++;
-            } else {
-                count_human_dna++;
-            }
-        }
-
-        StatsDto statsDto = new StatsDto();
-        statsDto.setCount_human_dna(count_human_dna);
-        statsDto.setCount_mutant_dna(count_simian_dna);
-        if (statsDto.getCount_human_dna() > 0) {
-            statsDto.setRatio(statsDto.getCount_mutant_dna()/statsDto.getCount_human_dna());
-        } else {
-            statsDto.setRatio(statsDto.getCount_mutant_dna());
-        }
-
-        return statsDto;
+        return isSimian;
 
     }
 
