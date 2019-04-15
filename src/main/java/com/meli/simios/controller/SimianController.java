@@ -1,40 +1,36 @@
 package com.meli.simios.controller;
 
-import com.meli.simios.business.SimianBusiness;
+import com.meli.simios.dto.StatsDto;
+import com.meli.simios.service.SimianService;
 import com.meli.simios.dto.DnaDto;
 import com.meli.simios.exception.DnaInvalidException;
+import com.meli.simios.exception.InvalidArrayException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class SimianController {
 
     @Autowired
-    private SimianBusiness simianBusiness;
+    private SimianService simianService;
 
     @PostMapping
     @RequestMapping("/simian")
-    public ResponseEntity isSimian(@RequestBody DnaDto dnaDto) throws DnaInvalidException {
+    public ResponseEntity isSimian(@RequestBody DnaDto dnaDto) throws DnaInvalidException, InvalidArrayException {
 
-        /*String[][] dna = {
-                {"C", "C", "A", "A", "A", "A"},
-                {"C", "C", "A", "C", "G", "C"},
-                {"A", "A", "G", "G", "T", "T"},
-                {"A", "A", "G", "C", "C", "T"},
-                {"C", "G", "A", "A", "G", "T"},
-                {"C", "C", "A", "A", "T", "T"}
-        };*/
-
-
-        return simianBusiness.isSimian(dnaDto.getDna())
+        return simianService.isSimian(dnaDto.getDna())
                 ? ResponseEntity.status(HttpStatus.OK).build()
                 : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
+    }
+
+    @GetMapping
+    @RequestMapping("/stats")
+    public ResponseEntity<Object> stats() {
+        StatsDto stats = simianService.getStats();
+        return ResponseEntity.status(HttpStatus.OK).body(stats);
     }
 
 }
