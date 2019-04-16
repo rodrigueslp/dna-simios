@@ -1,6 +1,7 @@
 package com.meli.simios.service;
 
 import com.meli.simios.enumerator.DnaTypeEnum;
+import com.meli.simios.enumerator.QtMatrixSequenceEnum;
 import com.meli.simios.exception.DnaInvalidException;
 import com.meli.simios.exception.InvalidArrayException;
 import com.meli.simios.util.FormatUtil;
@@ -16,8 +17,6 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class SimianService {
-
-    private final int QT_MAX_SEQUENCE_SIMIAN = 4;
 
     private final Set ALLOWED_LETTERS = new HashSet<>(Arrays.asList("A", "G", "C", "T"));
 
@@ -41,7 +40,7 @@ public class SimianService {
 
         this.validSimianDna(formattedDna);
 
-        Boolean isSimian = matrixSequenceUtil.getAllSequences(formattedDna, QT_MAX_SEQUENCE_SIMIAN) > 0;
+        Boolean isSimian = matrixSequenceUtil.getAllSequences(formattedDna, QtMatrixSequenceEnum.QT_MAX_SEQUENCE_SIMIAN.getQtMaxSequence()) > 0;
 
         DnaTypeEnum dnaTypeEnum = isSimian ? DnaTypeEnum.MUTANT : DnaTypeEnum.HUMAN;
 

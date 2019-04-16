@@ -8,6 +8,15 @@ public class StatsDto {
 
     private float ratio;
 
+    public StatsDto() {
+    }
+
+    public StatsDto(int count_human_dna, int count_mutant_dna, float ratio) {
+        this.count_human_dna = count_human_dna;
+        this.count_mutant_dna = count_mutant_dna;
+        this.ratio = ratio;
+    }
+
     public int getCount_mutant_dna() {
         return count_mutant_dna;
     }

@@ -13,8 +13,8 @@ public class StatsService {
 
     public StatsDto getStatsMutantAndHuman() {
 
-        int count_human_dna = dnaService.findAllByDnaTypeEnum(DnaTypeEnum.HUMAN).size();
-        int count_simian_dna = dnaService.findAllByDnaTypeEnum(DnaTypeEnum.MUTANT).size();
+        int count_human_dna = (dnaService.findAllByDnaTypeEnum(DnaTypeEnum.HUMAN) != null) ? dnaService.findAllByDnaTypeEnum(DnaTypeEnum.HUMAN).size() : 0;
+        int count_simian_dna = (dnaService.findAllByDnaTypeEnum(DnaTypeEnum.MUTANT) != null) ? dnaService.findAllByDnaTypeEnum(DnaTypeEnum.MUTANT).size() : 0;
 
         StatsDto statsDto = new StatsDto();
         statsDto.setCount_human_dna(count_human_dna);

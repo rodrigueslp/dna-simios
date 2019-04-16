@@ -15,6 +15,15 @@ public class Dna {
 
     private DnaTypeEnum dnaTypeEnum;
 
+    public Dna() {
+    }
+
+    public Dna(ObjectId id, String[][] dna, DnaTypeEnum dnaTypeEnum) {
+        this.id = id;
+        this.dna = dna;
+        this.dnaTypeEnum = dnaTypeEnum;
+    }
+
     public ObjectId getId() {
         return id;
     }

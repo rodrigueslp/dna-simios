@@ -1,5 +1,6 @@
 package com.meli.simios.service;
 
+import com.meli.simios.enumerator.QtMatrixSequenceEnum;
 import com.meli.simios.exception.DnaInvalidException;
 import com.meli.simios.exception.InvalidArrayException;
 import com.meli.simios.util.FormatUtil;
@@ -34,8 +35,6 @@ public class SimianServiceTest {
     @Mock
     private MatrixSequenceUtil matrixSequenceUtil;
 
-    private final int QT_MAX_SEQUENCE_SIMIAN = 4;
-
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -65,7 +64,7 @@ public class SimianServiceTest {
         String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
         String[][] matrixWithSimianDna = this.getMatrixWithSimianDna();
         when(formatUtil.formatToBidimensionalSimianDna(dna)).thenReturn(matrixWithSimianDna);
-        when(matrixSequenceUtil.getAllSequences(matrixWithSimianDna, QT_MAX_SEQUENCE_SIMIAN)).thenReturn(3);
+        when(matrixSequenceUtil.getAllSequences(matrixWithSimianDna, QtMatrixSequenceEnum.QT_MAX_SEQUENCE_SIMIAN.getQtMaxSequence())).thenReturn(3);
         Boolean isSimian = simianService.isSimian(dna);
         assertTrue(isSimian);
 

@@ -1,8 +1,8 @@
 package com.meli.simios.service;
 
-import com.meli.simios.repository.DnaRepository;
 import com.meli.simios.document.Dna;
 import com.meli.simios.enumerator.DnaTypeEnum;
+import com.meli.simios.repository.DnaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
