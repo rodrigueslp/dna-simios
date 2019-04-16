@@ -3,6 +3,8 @@ package com.meli.simios.controller;
 import com.meli.simios.dto.DnaDto;
 import com.meli.simios.exception.DnaInvalidException;
 import com.meli.simios.exception.InvalidArrayException;
+import com.meli.simios.exception.MatrixNotSquareException;
+import com.meli.simios.exception.SimiosCommonException;
 import com.meli.simios.service.SimianService;
 import com.meli.simios.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class SimianController {
 
     @PostMapping
     @RequestMapping("/simian")
-    public ResponseEntity isSimian(@RequestBody DnaDto dnaDto) throws DnaInvalidException, InvalidArrayException, ExecutionException, InterruptedException {
+    public ResponseEntity isSimian(@RequestBody DnaDto dnaDto) throws ExecutionException, InterruptedException, SimiosCommonException {
 
         return simianService.isSimian(dnaDto.getDna())
                 ? ResponseEntity.status(HttpStatus.OK).build()

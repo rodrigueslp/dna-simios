@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidUtil {
 
-    public void validArray(String[] array) throws InvalidArrayException {
+    public void validArrayNullOrEmpty(String[] array) throws InvalidArrayException {
         if (array == null || array.length < 1) {
             throw new InvalidArrayException();
         }

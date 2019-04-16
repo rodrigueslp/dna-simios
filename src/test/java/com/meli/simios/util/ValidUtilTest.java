@@ -24,7 +24,7 @@ public class ValidUtilTest {
 
         try {
             String[] arr = new String[0];
-            validUtil.validArray(arr);
+            validUtil.validArrayNullOrEmpty(arr);
         } catch (InvalidArrayException e) {
             assertThat(e.getMessage(), is("Array nulo ou vazio."));
         }
@@ -35,7 +35,7 @@ public class ValidUtilTest {
     public void validArray_withNullArray_mustInvokeArrayInvalidException()  {
 
         try {
-            validUtil.validArray(null);
+            validUtil.validArrayNullOrEmpty(null);
         } catch (InvalidArrayException e) {
             assertThat(e.getMessage(), is("Array nulo ou vazio."));
         }

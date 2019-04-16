@@ -41,7 +41,7 @@ public class MatrixSequenceUtil {
             String s = (secondaryDiagonalSequenceFuture.isDone()) ? "is done" : "is not done";
             log.info("secondaryDiagonalSequenceFuture {}", s);
 
-            Thread.sleep(200);
+            Thread.sleep(100);
         }
 
         return horizontalSequenceFuture.get() + verticalSequenceFuture.get() + mainDiagonalSequenceFuture.get() + secondaryDiagonalSequenceFuture.get();

@@ -3,6 +3,8 @@ package com.meli.simios.controller;
 import com.meli.simios.dto.DnaDto;
 import com.meli.simios.exception.DnaInvalidException;
 import com.meli.simios.exception.InvalidArrayException;
+import com.meli.simios.exception.MatrixNotSquareException;
+import com.meli.simios.exception.SimiosCommonException;
 import com.meli.simios.service.SimianService;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -10,14 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.concurrent.ExecutionException;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class SimianControllerTest {
 
@@ -33,7 +34,7 @@ public class SimianControllerTest {
     }
 
     @Test
-    public void isSimian_withSimianDna_mustReturnHttp200Ok() throws InterruptedException, ExecutionException, InvalidArrayException, DnaInvalidException {
+    public void isSimian_withSimianDna_mustReturnHttp200Ok() throws InterruptedException, ExecutionException, SimiosCommonException {
 
         String[] dna = {"GTGCGT", "CAGTGC", "TTATAT", "AGAACG", "CCCCTA", "TCACTG"};
 
@@ -48,7 +49,7 @@ public class SimianControllerTest {
     }
 
     @Test
-    public void isSimian_withSimianDna_mustReturnHttp403Forbbiden() throws InterruptedException, ExecutionException, InvalidArrayException, DnaInvalidException {
+    public void isSimian_withSimianDna_mustReturnHttp403Forbbiden() throws InterruptedException, ExecutionException, SimiosCommonException {
 
         String[] dna = {"GTGCGT", "CAGTGC", "TTATAT", "AGAACG", "TCCCTA", "TCACTG"};
 

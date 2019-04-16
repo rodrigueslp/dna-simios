@@ -3,7 +3,7 @@ package com.meli.simios.service;
 import com.meli.simios.enumerator.DnaTypeEnum;
 import com.meli.simios.enumerator.QtMatrixSequenceEnum;
 import com.meli.simios.exception.DnaInvalidException;
-import com.meli.simios.exception.InvalidArrayException;
+import com.meli.simios.exception.SimiosCommonException;
 import com.meli.simios.util.FormatUtil;
 import com.meli.simios.util.MatrixSequenceUtil;
 import com.meli.simios.util.ValidUtil;
@@ -32,11 +32,11 @@ public class SimianService {
     @Autowired
     private MatrixSequenceUtil matrixSequenceUtil;
 
-    public Boolean isSimian(String[] dna) throws DnaInvalidException, InvalidArrayException, ExecutionException, InterruptedException {
+    public Boolean isSimian(String[] dna) throws ExecutionException, InterruptedException, SimiosCommonException {
 
-        validUtil.validArray(dna);
+        validUtil.validArrayNullOrEmpty(dna);
 
-        String[][] formattedDna = formatUtil.formatToBidimensionalSimianDna(dna);
+        String[][] formattedDna = formatUtil.formatToSquareBidimensional(dna);
 
         this.validSimianDna(formattedDna);
 

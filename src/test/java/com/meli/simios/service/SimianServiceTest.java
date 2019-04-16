@@ -3,6 +3,7 @@ package com.meli.simios.service;
 import com.meli.simios.enumerator.QtMatrixSequenceEnum;
 import com.meli.simios.exception.DnaInvalidException;
 import com.meli.simios.exception.InvalidArrayException;
+import com.meli.simios.exception.SimiosCommonException;
 import com.meli.simios.util.FormatUtil;
 import com.meli.simios.util.MatrixSequenceUtil;
 import com.meli.simios.util.ValidUtil;
@@ -41,11 +42,11 @@ public class SimianServiceTest {
     }
 
     @Test
-    public void isSimian_withMatrixWithInvalidData_mustInvokeDnaInvalidException() throws DnaInvalidException, InvalidArrayException {
+    public void isSimian_withMatrixWithInvalidData_mustInvokeDnaInvalidException() throws SimiosCommonException {
 
         try {
             String[] dna = {"DTGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
-            when(formatUtil.formatToBidimensionalSimianDna(dna)).thenReturn(this.getMatrixWithInvalidData());
+            when(formatUtil.formatToSquareBidimensional(dna)).thenReturn(this.getMatrixWithInvalidData());
             Boolean simian = simianService.isSimian(dna);
             fail("Test failed");
         } catch (DnaInvalidException e) {
@@ -59,11 +60,11 @@ public class SimianServiceTest {
     }
 
     @Test
-    public void isSimian_withMatrixWithSimianDna_mustReturnTrue() throws DnaInvalidException, InvalidArrayException, ExecutionException, InterruptedException {
+    public void isSimian_withMatrixWithSimianDna_mustReturnTrue() throws SimiosCommonException, ExecutionException, InterruptedException {
 
         String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
         String[][] matrixWithSimianDna = this.getMatrixWithSimianDna();
-        when(formatUtil.formatToBidimensionalSimianDna(dna)).thenReturn(matrixWithSimianDna);
+        when(formatUtil.formatToSquareBidimensional(dna)).thenReturn(matrixWithSimianDna);
         when(matrixSequenceUtil.getAllSequences(matrixWithSimianDna, QtMatrixSequenceEnum.QT_MAX_SEQUENCE_SIMIAN.getQtMaxSequence())).thenReturn(3);
         Boolean isSimian = simianService.isSimian(dna);
         assertTrue(isSimian);
