@@ -29,3 +29,6 @@ GET → /stats
 ```
 {"count_mutant_dna": 50, "count_human_dna": 200: "ratio": 0.25}
 ```
+
+## Obs
+How the app was deployed on Heroku, in the first access can be app is will in "sleep mode", making the first access more slow.
